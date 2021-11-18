@@ -1,7 +1,9 @@
 package com.pishi.topheadlines.network
 
-data class PopularNews(
-    val articles: List<Article>
+data class TopHeadlines(
+    val articles: List<Article>,
+    val status: String,
+    val totalResults: Int
 )
 
 data class Article(
@@ -16,6 +18,6 @@ data class Article(
 )
 
 data class Source(
-    val id: String,
+    val id: Any,
     val name: String
 )
