@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Top Headlines</string>
+
+    <string name="title"> Title : </string>
 </resources>

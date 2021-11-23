@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         val request =ServiceBuilder.buildService(NewsApiInterface::class.java)
 
-        val call = request.getTopHeadlines(Constants.API_KEY, Constants.COUNTRY)
+        val call = request.getTopHeadlines(Constants.API_KEY_VALUE, Constants.COUNTRY_VALUE)
 
         call.enqueue(object: Callback<TopHeadlines>{
             override fun onResponse(call: Call<TopHeadlines>, response: Response<TopHeadlines>) {

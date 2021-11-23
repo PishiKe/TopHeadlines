@@ -1,24 +1,33 @@
 package com.pishi.topheadlines.view.adapter
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.pishi.topheadlines.R
+import com.pishi.topheadlines.databinding.NewsItemBinding
 import com.pishi.topheadlines.network.Article
 
 class NewsAdapter (private val newsList : List<Article>) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
-        return NewsViewHolder(view)
+        val binding : NewsItemBinding = NewsItemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false)
+
+        return NewsViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
 
-        return holder.bind(newsList[position])
+        val news = newsList[position]
+
+        holder.tvTitle.text = news.title
     }
 
     override fun getItemCount(): Int {
@@ -26,13 +35,10 @@ class NewsAdapter (private val newsList : List<Article>) : RecyclerView.Adapter<
         return newsList.size
     }
 
-    class NewsViewHolder (itemView : View) : RecyclerView.ViewHolder(itemView){
+    class NewsViewHolder (view : NewsItemBinding) : RecyclerView.ViewHolder(view.root){
 
-        private val title: TextView = itemView.findViewById(R.id.tv_title)
-
-        fun bind (news : Article){
-            title.text = news.title
-        }
+         val tvTitle: TextView = view.tvTitle
+         val ivImage: ImageView = view.ivNewsImage
 
     }
 }
