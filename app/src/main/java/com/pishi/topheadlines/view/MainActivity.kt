@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                     binding.rvNewsList.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(this@MainActivity)
-                        adapter = NewsAdapter(response.body()!!.articles)
+                        adapter = NewsAdapter(response.body()!!.articles, this@MainActivity)
                     }
                 }
             }

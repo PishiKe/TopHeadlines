@@ -1,19 +1,17 @@
 package com.pishi.topheadlines.view.adapter
 
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.pishi.topheadlines.R
 import com.pishi.topheadlines.databinding.NewsItemBinding
 import com.pishi.topheadlines.network.Article
 
-class NewsAdapter (private val newsList : List<Article>) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter (private val newsList : List<Article>, val activity: Activity) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
 
@@ -28,6 +26,16 @@ class NewsAdapter (private val newsList : List<Article>) : RecyclerView.Adapter<
         val news = newsList[position]
 
         holder.tvTitle.text = news.title
+
+        Glide.with(activity)
+            .load(news.urlToImage)
+            .centerCrop()
+            .into(holder.ivImage)
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent()
+        }
+
     }
 
     override fun getItemCount(): Int {
