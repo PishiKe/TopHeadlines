@@ -5,29 +5,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pishi.topheadlines.R
+import com.pishi.topheadlines.databinding.FragmentHomeBinding
+import com.pishi.topheadlines.network.NewsApiInterface
+import com.pishi.topheadlines.network.ServiceBuilder
+import com.pishi.topheadlines.network.TopHeadlines
+import com.pishi.topheadlines.util.Constants
+import com.pishi.topheadlines.view.adapter.NewsAdapter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -35,26 +32,31 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+
+
+        val request = ServiceBuilder.buildService(NewsApiInterface::class.java)
+
+        val call = request.getTopHeadlines(Constants.API_KEY_VALUE, Constants.COUNTRY_VALUE)
+
+        call.enqueue(object: Callback<TopHeadlines> {
+            override fun onResponse(call: Call<TopHeadlines>, response: Response<TopHeadlines>) {
+                if (response.isSuccessful){
+                    binding.rvNewsList.apply {
+                        setHasFixedSize(true)
+                        layoutManager = LinearLayoutManager(requireContext())
+                        adapter = NewsAdapter(response.body()!!.articles, this@HomeFragment)
+                    }
                 }
             }
+
+            override fun onFailure(call: Call<TopHeadlines>, t: Throwable) {
+                Toast.makeText(requireContext(),"${t.message}", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
+        return binding.root
     }
 }

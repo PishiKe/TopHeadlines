@@ -6,12 +6,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pishi.topheadlines.databinding.NewsItemBinding
 import com.pishi.topheadlines.network.Article
 
-class NewsAdapter (private val newsList : List<Article>, val activity: Activity) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter (private val newsList : List<Article>, val fragment : Fragment) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
 
@@ -27,13 +28,13 @@ class NewsAdapter (private val newsList : List<Article>, val activity: Activity)
 
         holder.tvTitle.text = news.title
 
-        Glide.with(activity)
+        Glide.with(fragment)
             .load(news.urlToImage)
             .centerCrop()
             .into(holder.ivImage)
 
         holder.itemView.setOnClickListener {
-            val intent = Intent()
+            //
         }
 
     }
